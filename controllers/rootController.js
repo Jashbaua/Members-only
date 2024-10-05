@@ -1,10 +1,10 @@
 const db = require("../db/queries");
 const bcrypt = require("bcryptjs");
-const {validationResult}=require('express-validator')
+const { validationResult } = require("express-validator");
 
 module.exports = {
 	getMessages(req, res) {
-		res.render("index");
+		res.render("index",{logged:req.isAuthenticated()});
 	},
 	getSignUp(req, res) {
 		res.render("signUpForm");
@@ -13,9 +13,9 @@ module.exports = {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
 			return res.status(400).render("signUpForm", {
-			  errors: errors.array(),
+				errors: errors.array(),
 			});
-		  }
+		}
 		bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
 			await db.createUser(
 				req.body.firstName,
@@ -26,4 +26,18 @@ module.exports = {
 			res.redirect("/login");
 		});
 	},
+	getLogin(req, res) {
+		const errors = req.session.messages || [];
+		req.session.messages = [];
+		console.log(errors)
+		res.render("loginForm",{errors});
+	},
+	getLogout(req, res) {
+		req.logout((err) => {
+			if (err) {
+			  return next(err);
+			}
+			res.redirect("/");
+		  });
+	}
 };
