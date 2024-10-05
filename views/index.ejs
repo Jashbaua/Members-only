@@ -22,7 +22,9 @@
 			<hr>
 			<div><%=isMember?`${messages[i].first_name} ${messages[i].last_name}`:'Anonymous'%>: <%=messages[i].message%></div>
 			<div>Timestamp: <%=messages[i].time_stamp%></div>
+			<%if(isAdmin){%>
 			<form action="/message/delete/<%=messages[i].id%>" method="post"><button>Delete</button></form>
+			<%}%>
 			<%}%>
 	</body>
 </html>
