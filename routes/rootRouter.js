@@ -13,5 +13,7 @@ rootRouter.post("/login", auth.login);
 rootRouter.get('/logout',rootController.getLogout)
 rootRouter.get('/message',auth.user, rootController.getMessageForm)
 rootRouter.post('/message',validateMessage, rootController.postMessageForm)
+rootRouter.get('/member',auth.user, rootController.getMember)
+rootRouter.post('/member', rootController.postMember)
 
 module.exports = rootRouter;

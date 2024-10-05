@@ -24,6 +24,6 @@ app.use(
 	})
 );
 app.use(passport.session());
-app.use("/", rootRouter);
+app.use("/", rootRouter)
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

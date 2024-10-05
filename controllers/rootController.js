@@ -4,8 +4,8 @@ const { validationResult } = require("express-validator");
 
 module.exports = {
 	async getIndex(req, res) {
-		const messages= await db.getMessages()
-		res.render("index",{messages,logged:req.isAuthenticated()});
+		const messages = await db.getMessages();
+		res.render("index", { messages, logged: req.isAuthenticated(), isMember:req.user&&req.user.is_member });
 	},
 	getSignUp(req, res) {
 		res.render("signUpForm");
@@ -30,19 +30,19 @@ module.exports = {
 	getLogin(req, res) {
 		const errors = req.session.messages || [];
 		req.session.messages = [];
-		console.log(errors)
-		res.render("loginForm",{errors});
+		console.log(errors);
+		res.render("loginForm", { errors });
 	},
 	getLogout(req, res) {
 		req.logout((err) => {
 			if (err) {
-			  return next(err);
+				return next(err);
 			}
 			res.redirect("/");
-		  });
+		});
 	},
 	getMessageForm(req, res) {
-		res.render('messageForm')
+		res.render("messageForm");
 	},
 	async postMessageForm(req, res) {
 		const errors = validationResult(req);
@@ -51,7 +51,21 @@ module.exports = {
 				errors: errors.array(),
 			});
 		}
-		await db.createMessage(req.user.id, req.body.message)
-		res.redirect('/')
-	}
+		await db.createMessage(req.user.id, req.body.message);
+		res.redirect("/");
+	},
+	getMember(req, res) {
+		res.render("promotionTest");
+	},
+	async postMember(req, res) {
+		if (req.body.promotionTest == 6) {
+			await db.makeMember(req.user.id);
+			res.send(`<script>
+				alert('You are now a member!\\nNow you can see the names of authors');
+				window.location.href = "/";
+			  </script>`);
+		} else {
+			res.redirect('/member')
+		}
+	},
 };

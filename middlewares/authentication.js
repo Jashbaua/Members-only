@@ -7,7 +7,7 @@ module.exports = {
         failureRedirect: '/login',
         failureMessage:true
     }),
-    user(req, res,next) {
+    user(req, res, next) {
         if (req.isAuthenticated()) next()
         else res.redirect('login')
     }

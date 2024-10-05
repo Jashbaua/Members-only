@@ -14,7 +14,12 @@ module.exports = {
 		]);
 	},
 	async getMessages() {
-		const { rows } = await pool.query("SELECT * FROM messages ORDER BY time_stamp DESC")
-		return rows
-	}
+		const { rows } = await pool.query(
+			"SELECT * FROM messages JOIN users ON messages.user_id = users.id ORDER BY time_stamp DESC"
+		);
+		return rows;
+	},
+	async makeMember(userId) {
+		await pool.query("UPDATE users SET is_member=TRUE WHERE id=$1", [userId]);
+	},
 };

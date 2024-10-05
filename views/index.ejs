@@ -12,10 +12,13 @@
 		<%} else {%>
 		<a href="message"><button>Send message</button></a>
 		<a href="logout"><button>Logout</button></a>
+		<%if(!isMember){%>
+		<a href="member"><button>Become member</button></a>
+		<%}%>
 		<%}%>
 		<%for(let i=0;i<messages.length;i++){%>
 			<hr>
-			<div>Anonymous: <%=messages[i].message%></div>
+			<div><%=isMember?`${messages[i].first_name} ${messages[i].last_name}`:'Anonymous'%>: <%=messages[i].message%></div>
 			<div>Timestamp: <%=messages[i].time_stamp%></div>
 			<%}%>
 	</body>
