@@ -5,7 +5,12 @@ const { validationResult } = require("express-validator");
 module.exports = {
 	async getIndex(req, res) {
 		const messages = await db.getMessages();
-		res.render("index", { messages, logged: req.isAuthenticated(), isMember:req.user&&req.user.is_member });
+		res.render("index", {
+			messages,
+			logged: req.isAuthenticated(),
+			isMember: req.user && req.user.is_member,
+			isAdmin: req.user && req.user.is_admin,
+		});
 	},
 	getSignUp(req, res) {
 		res.render("signUpForm");
@@ -30,7 +35,6 @@ module.exports = {
 	getLogin(req, res) {
 		const errors = req.session.messages || [];
 		req.session.messages = [];
-		console.log(errors);
 		res.render("loginForm", { errors });
 	},
 	getLogout(req, res) {
@@ -65,7 +69,25 @@ module.exports = {
 				window.location.href = "/";
 			  </script>`);
 		} else {
-			res.redirect('/member')
+			res.redirect("/member");
 		}
 	},
+	getAdmin(req, res) {
+		res.render("promotionTest");
+	},
+	async postAdmin(req, res) {
+		if (req.body.promotionTest == 9) {
+			await db.makeAdmin(req.user.id);
+			res.send(`<script>
+				alert('You are now an admin!\\nNow you can delete messages');
+				window.location.href = "/";
+			  </script>`);
+		} else {
+			res.redirect("/admin");
+		}
+	},
+	async postDeleteMessage(req, res) {
+		await db.deleteMessage(req.params.messageId)
+		res.redirect('/')
+	}
 };

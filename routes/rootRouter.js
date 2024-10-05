@@ -12,8 +12,11 @@ rootRouter.get("/login", rootController.getLogin);
 rootRouter.post("/login", auth.login);
 rootRouter.get('/logout',rootController.getLogout)
 rootRouter.get('/message',auth.user, rootController.getMessageForm)
-rootRouter.post('/message',validateMessage, rootController.postMessageForm)
+rootRouter.post('/message',auth.user,validateMessage, rootController.postMessageForm)
 rootRouter.get('/member',auth.user, rootController.getMember)
-rootRouter.post('/member', rootController.postMember)
+rootRouter.post('/member',auth.user, rootController.postMember)
+rootRouter.get('/admin',auth.member, rootController.getAdmin)
+rootRouter.post('/admin',auth.member, rootController.postAdmin)
+rootRouter.post('/message/delete/:messageId',auth.admin, rootController.postDeleteMessage)
 
 module.exports = rootRouter;

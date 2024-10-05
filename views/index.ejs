@@ -14,12 +14,15 @@
 		<a href="logout"><button>Logout</button></a>
 		<%if(!isMember){%>
 		<a href="member"><button>Become member</button></a>
+		<%} else if(!isAdmin){%>
+		<a href="admin"><button>Become Admin</button></a>
 		<%}%>
 		<%}%>
 		<%for(let i=0;i<messages.length;i++){%>
 			<hr>
 			<div><%=isMember?`${messages[i].first_name} ${messages[i].last_name}`:'Anonymous'%>: <%=messages[i].message%></div>
 			<div>Timestamp: <%=messages[i].time_stamp%></div>
+			<form action="/message/delete/<%=messages[i].id%>" method="post"><button>Delete</button></form>
 			<%}%>
 	</body>
 </html>
