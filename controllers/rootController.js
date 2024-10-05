@@ -45,6 +45,12 @@ module.exports = {
 		res.render('messageForm')
 	},
 	async postMessageForm(req, res) {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).render("messageForm", {
+				errors: errors.array(),
+			});
+		}
 		await db.createMessage(req.user.id, req.body.message)
 		res.redirect('/')
 	}

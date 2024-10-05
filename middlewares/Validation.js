@@ -33,4 +33,13 @@ module.exports = {
 			})
 			.withMessage("Passwords do not match"),
 	],
+	validateMessage: [
+		body("message")
+			.trim()
+			.notEmpty()
+			.withMessage("Message is required")
+			.isLength({ min: 5, max: 500 })
+			.withMessage("Message must be between 5 and 500 characters")
+			.escape(),
+	],
 };

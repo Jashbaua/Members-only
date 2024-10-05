@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { validateSignUp } = require("../middlewares/Validation");
+const { validateSignUp,validateMessage } = require("../middlewares/Validation");
 const rootController = require("../controllers/rootController");
 const auth = require("../middlewares/authentication");
 
@@ -12,6 +12,6 @@ rootRouter.get("/login", rootController.getLogin);
 rootRouter.post("/login", auth.login);
 rootRouter.get('/logout',rootController.getLogout)
 rootRouter.get('/message',auth.user, rootController.getMessageForm)
-rootRouter.post('/message',rootController.postMessageForm)
+rootRouter.post('/message',validateMessage, rootController.postMessageForm)
 
 module.exports = rootRouter;
