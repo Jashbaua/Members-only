@@ -7,4 +7,14 @@ module.exports = {
 			[firstName, lastName, email, password]
 		);
 	},
+	async createMessage(userId, message) {
+		await pool.query("INSERT INTO messages (user_id,message) VALUES ($1,$2)", [
+			userId,
+			message,
+		]);
+	},
+	async getMessages() {
+		const { rows } = await pool.query("SELECT * FROM messages ORDER BY time_stamp DESC")
+		return rows
+	}
 };

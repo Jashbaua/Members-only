@@ -12,6 +12,12 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR ( 255 ) UNIQUE,
   password VARCHAR ( 255 )
 );
+CREATE TABLE IF NOT EXISTS messages (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  user_id INTEGER REFERENCES users(id),
+  message VARCHAR ( 255 ),
+  time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP  
+);
 `;
 
 async function main() {

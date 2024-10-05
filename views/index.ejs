@@ -10,7 +10,13 @@
 		<a href="sign-up"><button>Sign up</button></a>
 		<a href="login"><button>Login</button></a>
 		<%} else {%>
+		<a href="message"><button>Create post</button></a>
 		<a href="logout"><button>Logout</button></a>
 		<%}%>
+		<%for(let i=0;i<messages.length;i++){%>
+			<hr>
+			<div>Anonymous: <%=messages[i].message%></div>
+			<div>Timestamp: <%=messages[i].time_stamp%></div>
+			<%}%>
 	</body>
 </html>

@@ -3,8 +3,9 @@ const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 
 module.exports = {
-	getMessages(req, res) {
-		res.render("index",{logged:req.isAuthenticated()});
+	async getIndex(req, res) {
+		const messages= await db.getMessages()
+		res.render("index",{messages,logged:req.isAuthenticated()});
 	},
 	getSignUp(req, res) {
 		res.render("signUpForm");
@@ -39,5 +40,12 @@ module.exports = {
 			}
 			res.redirect("/");
 		  });
+	},
+	getMessageForm(req, res) {
+		res.render('messageForm')
+	},
+	async postMessageForm(req, res) {
+		await db.createMessage(req.user.id, req.body.message)
+		res.redirect('/')
 	}
 };
