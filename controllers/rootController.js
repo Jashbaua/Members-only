@@ -22,14 +22,21 @@ module.exports = {
 				errors: errors.array(),
 			});
 		}
+
 		bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-			await db.createUser(
-				req.body.firstName,
-				req.body.lastName,
-				req.body.email,
-				hashedPassword
-			);
-			res.redirect("/login");
+			try {
+				await db.createUser(
+					req.body.firstName,
+					req.body.lastName,
+					req.body.email,
+					hashedPassword
+				);
+				res.redirect("/login");
+			} catch (err) {
+				return res.status(400).render("signUpForm", {
+					errors: [{ msg: "Email is already registered" }],
+				});
+			}
 		});
 	},
 	getLogin(req, res) {
@@ -87,7 +94,7 @@ module.exports = {
 		}
 	},
 	async postDeleteMessage(req, res) {
-		await db.deleteMessage(req.params.messageId)
-		res.redirect('/')
-	}
+		await db.deleteMessage(req.params.messageId);
+		res.redirect("/");
+	},
 };
